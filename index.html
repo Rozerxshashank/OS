@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Esports & Gaming Stats</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div>
+        <h1>Esports & Gaming Stats</h1>
+      </div>
+      <div class="controls">
+        <input id="search" type="search" placeholder="Search games..." />
+        <button id="refresh">Refresh</button>
+      </div>
+    </header>
+
+    <main class="main-grid">
+      <section class="left-col">
+        <div class="card list-card">
+          <div class="card-header">
+            <h2>Trending Games</h2>
+            <span id="count" class="muted">—</span>
+          </div>
+          <div id="games" class="games-grid"></div>
+        </div>
+
+        <div class="card charts-card">
+          <h2>Statistics</h2>
+          <div class="charts-grid">
+            <div class="chart-box">
+              <canvas id="genresChart"></canvas>
+            </div>
+            <div class="chart-box">
+              <canvas id="platformChart"></canvas>
+            </div>
+            <div class="chart-box wide">
+              <canvas id="ratingChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="right-col">
+        <div class="card selected-card">
+          <h3>Selected Game</h3>
+          <div id="selected">No game selected</div>
+        </div>
+
+        <div class="card top-card">
+          <h3>Top by Rating</h3>
+          <ol id="topList" class="top-list"></ol>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="footer">frontend- Shashank</footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
