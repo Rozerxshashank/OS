@@ -1,25 +1,19 @@
-// app.js - Simple single-page fetch + grid + charts + click-to-details
-const RAWG_KEY = "a9984ae797654f36b8dab8ae200978c7";
-const PAGE_SIZE = 40; // single-page size
 
-// DOM refs
+const RAWG_KEY = "a9984ae797654f36b8dab8ae200978c7";
+const PAGE_SIZE = 40; 
 const gamesEl = document.getElementById("games");
 const selectedEl = document.getElementById("selected");
 const refreshBtn = document.getElementById("refresh");
 const searchInput = document.getElementById("search");
 const countEl = document.getElementById("count");
 const topList = document.getElementById("topList");
-
 const genresCanvas = document.getElementById("genresChart");
 const platformsCanvas = document.getElementById("platformChart");
 const ratingCanvas = document.getElementById("ratingChart");
-
-// Small state
-let games = [];       // games loaded from single API page
-let filtered = [];    // games after search/filter
+let games = [];
+let filtered = [];
 let charts = { genres: null, platforms: null, ratings: null };
 
-// ---- Helpers ----
 function escapeHtml(s) {
   return String(s || "")
     .replace(/&/g, "&amp;")
@@ -35,7 +29,6 @@ async function fetchJson(url) {
   return r.json();
 }
 
-// ---- Fetch single page of trending games ----
 async function loadOnePage() {
   gamesEl.innerHTML = '<div class="muted">Loading trending games…</div>';
   try {
@@ -50,7 +43,6 @@ async function loadOnePage() {
   }
 }
 
-// ---- Render grid + top list + charts ----
 function renderAll() {
   renderGrid(filtered);
   renderTopList(filtered);
@@ -101,12 +93,11 @@ function renderTopList(list) {
   }
 }
 
-// ---- Charts: compute stats and draw ----
+// computeStats
 function computeStats(list) {
   const genreMap = {};
   const platformMap = {};
-  const ratingBuckets = [0, 0, 0, 0, 0]; // 0-2,2-4,4-6,6-8,8-10
-
+  const ratingBuckets = [0, 0, 0, 0, 0];
   for (const g of list || []) {
     (g.genres || []).forEach(ge => {
       if (!ge || !ge.name) return;
@@ -142,7 +133,6 @@ function updateCharts(list) {
   const ratingPerc = ratingCounts.map(c => +(c/n*100).toFixed(1));
 
   const colors = ["#3b82f6","#fb7185","#fb923c","#fcd34d","#34d399","#60a5fa","#a78bfa","#94a3b8"];
-
   // genres pie
   if (genresCanvas) {
     const ctx = genresCanvas.getContext("2d");
@@ -151,7 +141,6 @@ function updateCharts(list) {
     if (charts.genres) { charts.genres.data = data; charts.genres.options = opts; charts.genres.update(); }
     else charts.genres = new Chart(ctx, { type:"pie", data, options: opts });
   }
-
   // platforms doughnut
   if (platformsCanvas) {
     const ctx = platformsCanvas.getContext("2d");
@@ -160,7 +149,6 @@ function updateCharts(list) {
     if (charts.platforms) { charts.platforms.data = data; charts.platforms.options = opts; charts.platforms.update(); }
     else charts.platforms = new Chart(ctx, { type:"doughnut", data, options: opts });
   }
-
   // ratings bar
   if (ratingCanvas) {
     const ctx = ratingCanvas.getContext("2d");
@@ -169,9 +157,7 @@ function updateCharts(list) {
     if (charts.ratings) { charts.ratings.data = data; charts.ratings.options = opts; charts.ratings.update(); }
     else charts.ratings = new Chart(ctx, { type:"bar", data, options: opts });
   }
-}
-
-// ---- Click a game: fetch details and show ----
+}  
 async function fetchGameDetails(idOrSlug) {
   const url = `https://api.rawg.io/api/games/${idOrSlug}?key=${RAWG_KEY}`;
   return fetchJson(url);
@@ -207,7 +193,6 @@ async function onGameClick(g) {
   }
 }
 
-// ---- Search / refresh bindings ----
 searchInput?.addEventListener("input", () => {
   const q = (searchInput.value || "").trim().toLowerCase();
   filtered = q ? games.filter(g => (g.name||"").toLowerCase().includes(q)) : games.slice();
