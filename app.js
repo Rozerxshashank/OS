@@ -1,5 +1,5 @@
 
-const RAWG_KEY = "a9984ae797654f36b8dab8ae200978c7";
+const RAWG_KEY = "";
 const PAGE_SIZE = 40; 
 const gamesEl = document.getElementById("games");
 const selectedEl = document.getElementById("selected");
